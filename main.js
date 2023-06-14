@@ -26,7 +26,7 @@ import './style.css';
 // });
 
 const form = document.querySelector('.main-form');
-const total = document.querySelector('.outcomes__total-sum');
+// const total = document.querySelector('.outcomes__total-sum');
 const list = document.querySelector('.outcomes__list');
 const date = document.querySelector('.main-form__input--data');
 const name = document.querySelector('.main-form__input--name');
@@ -68,26 +68,19 @@ const displayList = function () {
   })
 }
 
-
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-
   addtoList();
   displayList();
-
-  let deleteButtons = document.querySelectorAll('.outcome__delete-btn');
-    deleteButtons.forEach((btn) => {
-
-      btn.addEventListener('click', function () {
-
-      let rowId = Number(this.closest('li').getAttribute('id'));
-      outcomes.splice(rowId, 1);
-      displayList(outcomes)
-    })})
 })
 
-
-
+document.addEventListener('click', ({ target }) => {
+  if (target.matches('.outcome__delete-btn')) {
+    const rowId = Number(target.closest('li').getAttribute('id'))
+    outcomes.splice(rowId, 1)
+    displayList()
+  }
+})
 
 
 
