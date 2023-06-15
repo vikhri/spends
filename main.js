@@ -26,12 +26,13 @@ import './style.css';
 // });
 
 const form = document.querySelector('.main-form');
-// const total = document.querySelector('.outcomes__total-sum');
+const total = document.querySelector('.outcomes__total-sum');
 const list = document.querySelector('.outcomes__list');
 const date = document.querySelector('.main-form__input--data');
 const name = document.querySelector('.main-form__input--name');
 const category = document.querySelector('.main-form__input--category');
 const sum = document.querySelector('.main-form__input--sum');
+const categorySelect = document.querySelector('.report-filters__select-category')
 
 let outcomes = [];
 const addtoList = function () {
@@ -39,7 +40,7 @@ const addtoList = function () {
   newOutcome.title = name.value;
   newOutcome.date = date.value;
   newOutcome.category = category.value;
-  newOutcome.sum = sum.value;
+  newOutcome.sum = Number(sum.value);
 
   outcomes.push(newOutcome)
 }
@@ -72,22 +73,33 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   addtoList();
   displayList();
+  calcTotalSum(outcomes)
+  calcCategorySum(outcomes, category.value)
+
 })
 
 document.addEventListener('click', ({ target }) => {
   if (target.matches('.outcome__delete-btn')) {
     const rowId = Number(target.closest('li').getAttribute('id'))
+    const rowCat = target.closest('li').querySelector('.outcome__category').textContent;
+
     outcomes.splice(rowId, 1)
     displayList()
+    calcTotalSum(outcomes)
+    calcCategorySum(outcomes, rowCat)
   }
 })
+const calcTotalSum = function(arr) {
+
+  const totalSum = arr.reduce((acc, currentValue) => acc + currentValue.sum, 0)
+  total.textContent = totalSum;
+}
 
 
+const calcCategorySum = function(arr, cat) {
+    const categorySum = arr.filter(item => item.category === cat).reduce((acc, currentValue) => acc + currentValue.sum, 0)
+    document.getElementById(cat).textContent = categorySum;
 
-
-
-
-
-
+  }
 
 

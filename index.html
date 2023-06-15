@@ -22,7 +22,7 @@
           Категория
           <select class="main-form__input main-form__input--category">
             <option>Еда</option>
-            <option>Жильё</option>
+            <option>Жилье</option>
             <option>Транспорт</option>
         </select>
         </label>
@@ -35,19 +35,23 @@
       <div class="outcomes__list-container">
         <ul class="outcomes__list">
         </ul>
-        <div class="outcomes__total visually-hidden"><p>Итого</p><p class="outcomes__total-sum">?</p></div>
+        <div class="outcomes__total"><p>Итого</p><p class="outcomes__total-sum">?</p></div>
       </div>
 
     </section>
     <section class="report">
       <h2>Отчет</h2>
       <form class="report__filters report-filters">
-        <select class="report-filters__form-field report-filters__form-field--select ">
+        <select class="report-filters__form-field report-filters__select-date">
           <option>За сегодня</option>
           <option>За вчера</option>
           <option>За неделю</option>
           <option>За месяц</option>
-          <option>Выбрать даты</option>
+        </select>
+        <select class="report-filters__form-field report-filters__select-category">
+          <option>Еда</option>
+          <option>Транспорт</option>
+          <option>Жилье</option>
         </select>
         <div class="report-filters__dates">
         <label for="date-from"></label><input class="report-filters__form-field" type="date" name="date-from" id="date-from">
@@ -59,16 +63,16 @@
       </div>
       <div class="report__category-output">
         <div class="report__category">
-          <p> Еда</p>
-          <p class='report__category-total'>0</p>
+          <p>Еда</p>
+          <p class='report__category-total' id="Еда">0</p>
         </div>
         <div class="report__category">
           <p>Жилье</p>
-          <p class='report__category-total'>0</p>
+          <p class='report__category-total' id="Жилье">0</p>
         </div>
         <div class="report__category">
           <p>Транспорт</p>
-          <p class='report__category-total'>0</p>
+          <p class='report__category-total' id="Транспорт">0</p>
         </div>
 
       </div>
