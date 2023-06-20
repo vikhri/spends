@@ -1,38 +1,15 @@
 import './style.css';
 
-//
-// const ctx = document.getElementById('myChart');
-// const data = {
-//   labels: [
-//     'Red',
-//     'Blue',
-//     'Yellow'
-//   ],
-//   datasets: [{
-//     label: 'My First Dataset',
-//     data: [300, 50, 100],
-//     backgroundColor: [
-//       'rgb(255, 99, 132)',
-//       'rgb(54, 162, 235)',
-//       'rgb(255, 205, 86)'
-//     ],
-//     hoverOffset: 4
-//   }]
-// };
-//
-// new Chart(ctx, {
-//   type: 'doughnut',
-//   data: data,
-// });
-
 const form = document.querySelector('.main-form');
 const total = document.querySelector('.outcomes__total-sum');
 const list = document.querySelector('.outcomes__list');
+const today = document.querySelector('.main-form__input--checkbox');
 const date = document.querySelector('.main-form__input--data');
 const name = document.querySelector('.main-form__input--name');
 const category = document.querySelector('.main-form__input--category');
 const sum = document.querySelector('.main-form__input--sum');
 const categorySelect = document.querySelector('.report-filters__select-category')
+const reloadBtn = document.getElementById('reload');
 
 let outcomes = [];
 const addtoList = function () {
@@ -68,16 +45,45 @@ const displayList = function () {
 
   })
 }
+const setDate = function () {
+
+  if (today.checked) {
+
+    const now = new Date();
+    let day = now.getDate().toString().padStart(2, '0')
+    let month = (now.getMonth() + 1).toString().padStart(2, '0');
+    let year = now.getFullYear().toString();
+
+    return year + '-' + month + '-' + day;
+  } else
+  { return date.value }
+}
+const calcTotalSum = function(arr) {
+  const totalSum = arr.reduce((acc, currentValue) => acc + currentValue.sum, 0)
+  total.textContent = totalSum;
+}
+const calcCategorySum = function(arr, cat) {
+  const categorySum = arr.filter(item => item.category === cat).reduce((acc, currentValue) => acc + currentValue.sum, 0)
+  document.getElementById(cat).textContent = categorySum;
+
+  return categorySum;
+}
+
+
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  addtoList();
-  displayList();
-  calcTotalSum(outcomes)
-  calcCategorySum(outcomes, category.value)
+  date.value = setDate();
+  if (Number(sum.value) > 0) {
+    addtoList();
+    displayList();
+    calcTotalSum(outcomes)
+    calcCategorySum(outcomes, category.value)
 
+  }
+  else
+    alert('ошибка')
 })
-
 document.addEventListener('click', ({ target }) => {
   if (target.matches('.outcome__delete-btn')) {
     const rowId = Number(target.closest('li').getAttribute('id'))
@@ -87,19 +93,55 @@ document.addEventListener('click', ({ target }) => {
     displayList()
     calcTotalSum(outcomes)
     calcCategorySum(outcomes, rowCat)
+
   }
 })
-const calcTotalSum = function(arr) {
+date.addEventListener('change', () => {
+  today.checked = false;
+})
 
-  const totalSum = arr.reduce((acc, currentValue) => acc + currentValue.sum, 0)
-  total.textContent = totalSum;
+const currentCategorySum = function (category){
+  return calcCategorySum(outcomes, category);
 }
 
 
-const calcCategorySum = function(arr, cat) {
-    const categorySum = arr.filter(item => item.category === cat).reduce((acc, currentValue) => acc + currentValue.sum, 0)
-    document.getElementById(cat).textContent = categorySum;
+let arrSum = [200, 100, 400];
+const ctx = document.getElementById('myChart');
+let data = {
+  labels: [
+    'Еда',
+    'Транспорт',
+    'Жилье'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: arrSum,
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+let Chart1 = new Chart(ctx, {
+  type: 'doughnut',
+  data: data,
+});
+const updateChart = function () {
 
-  }
+  arrSum.splice(0,1,currentCategorySum('Еда'))
+  arrSum.splice(1,1,currentCategorySum('Транспорт'))
+  arrSum.splice(2,1,currentCategorySum('Жилье'))
+
+  Chart1.update();
+}
+
+//to do. Придумать как показывать по дате
+
+categorySelect.addEventListener('submit', (e) => {
+  e.preventDefault();
+})
+
 
 

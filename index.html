@@ -15,6 +15,10 @@
           <input class="main-form__input main-form__input--data" type="date">
         </label>
         <label class="main-form__label">
+          Сегодня
+          <input class="main-form__input main-form__input--checkbox" type="checkbox" checked>
+        </label>
+        <label class="main-form__label">
           Трата
           <input class="main-form__input main-form__input--name" type="text">
         </label>
@@ -57,6 +61,7 @@
         <label for="date-from"></label><input class="report-filters__form-field" type="date" name="date-from" id="date-from">
         <label for="date-to">- </label><input class="report-filters__form-field" type="date" name="date-to" id="date-to">
         </div>
+        <button type="button" id="reload">обновить</button>
       </form>
       <div class="report__diagramm">
         <canvas id="myChart"></canvas>
